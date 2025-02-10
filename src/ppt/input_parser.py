@@ -2,14 +2,14 @@
     解析markdown 格式的内容，转换为ppt的数据结构
 """
 import re
-from typing import Optional
+from typing import Optional, Tuple
 
 from ppt.layout_manager import LayoutManager
 from ppt.ppt_data import PowerPoint
 from ppt.slide.slide_builder import SlideBuilder
 
 
-def parse_input_text(input_text: str, layout_manager: LayoutManager) -> PowerPoint:
+def parse_input_text(input_text: str, layout_manager: LayoutManager) -> tuple[PowerPoint, str]:
     """
     解析输入的文本并转换为 PowerPoint 数据结构。自动为每张幻灯片分配适当的布局。
     """
@@ -72,4 +72,4 @@ def parse_input_text(input_text: str, layout_manager: LayoutManager) -> PowerPoi
         slides.append(slide_builder.build())
 
     # 返回 PowerPoint 数据结构以及演示文稿标题
-    return PowerPoint(title=presentation_title, slides=slides)
+    return PowerPoint(title=presentation_title, slides=slides),presentation_title
