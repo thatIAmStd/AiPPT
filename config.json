@@ -1,0 +1,8 @@
+{
+    "input_mode": "text",
+    "chatbot_prompt": "prompts/chatbot.txt",
+    "content_formatter_prompt": "prompts/content_formatter.txt",
+    "content_assistant_prompt": "prompts/content_assistant.txt",
+    "image_advisor_prompt": "prompts/image_advisor.txt",
+    "ppt_template": "templates/SimpleTemplate.pptx"
+}
