@@ -1,4 +1,6 @@
 import gradio as gr
+
+from llm.image_advisor import ImageAdvisor
 from ppt.config import Config
 from ppt.input_parser import parse_input_text
 from ppt.layout_manager import LayoutManager
@@ -15,6 +17,8 @@ layout_mapping = get_layout_mapping(load_template(ppt_template))
 
 layout_manager = LayoutManager(layout_mapping)
 
+image_advisor = ImageAdvisor()
+
 
 def generate_contents(message, history):
     # 用户输入信息列表
@@ -30,8 +34,23 @@ def generate_contents(message, history):
     user_input = "需求如下：\n" + "\n".join(inputs)
 
     slides_content = chatbot.chat_with_history(user_input)
+    LOG.info(slides_content)
 
     return slides_content
+
+
+def handle_image_generate(history):
+    try:
+        slides_content = history[-1]["content"]
+
+        content_with_images, image_pair = image_advisor.generate_images(slides_content)
+        new_message = {"role": "assistant", "content": content_with_images}
+
+        history.append(new_message)
+        return history
+    except Exception as e:
+        LOG.error(f"生产图片错误：{e}")
+        raise gr.Error(f"生产图片错误，请刷新重试。错误日志如下：{e}")
 
 
 def generate_ppt(history):
@@ -87,23 +106,13 @@ with gr.Blocks(
         multimodal=True  # 支持多模态输入（文本和文件）
     )
 
-    # image_generate_btn = gr.Button("一键为 PowerPoint 配图")
-    #
-    # image_generate_btn.click(
-    #     fn=handle_image_generate,
-    #     inputs=contents_chatbot,
-    #     outputs=contents_chatbot,
-    # )
-    #
-    # # 创建生成 PowerPoint 的按钮
-    # generate_btn = gr.Button("一键生成 PowerPoint")
-    #
-    # # 监听生成按钮的点击事件
-    # generate_btn.click(
-    #     fn=handle_generate,  # 点击时执行的函数
-    #     inputs=contents_chatbot,  # 输入为聊天记录
-    #     outputs=gr.File()  # 输出为文件下载链接
-    # )
+    image_generate_btn = gr.Button("一键配图")
+    image_generate_btn.click(
+        fn=handle_image_generate,
+        inputs=contents_chatbot,
+        outputs=contents_chatbot
+    )
+
     generate_btn = gr.Button("一键生成PPT")
     generate_btn.click(
         fn=generate_ppt,
