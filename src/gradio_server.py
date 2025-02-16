@@ -1,4 +1,9 @@
+import os
+import sys
+
 import gradio as gr
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from llm.image_advisor import ImageAdvisor
 from ppt.config import Config
@@ -6,7 +11,7 @@ from ppt.input_parser import parse_input_text
 from ppt.layout_manager import LayoutManager
 from ppt.ppt_generator import generate_presentation
 from ppt.template_manager import load_template, get_layout_mapping
-from src.logger import LOG
+from logger import LOG
 from llm.chatbot import ChatBot
 
 config = Config()
@@ -42,6 +47,7 @@ def generate_contents(message, history):
 def handle_image_generate(history):
     try:
         slides_content = history[-1]["content"]
+        LOG.info(f"一键配图：{slides_content}")
 
         content_with_images, image_pair = image_advisor.generate_images(slides_content)
         new_message = {"role": "assistant", "content": content_with_images}
@@ -57,6 +63,7 @@ def generate_ppt(history):
     try:
         # 聊天记录的最新内容
         slides_content = history[-1]["content"]
+        LOG.info(f"生成PPT：{slides_content}")
 
         # 解析 markdown 格式的内容，转换为ppt的数据结构
         ppt_data, ppt_title = parse_input_text(slides_content, layout_manager)
@@ -93,8 +100,8 @@ with gr.Blocks(
 
     # 创建聊天机器人界面，提示用户输入
     contents_chatbot = gr.Chatbot(
-        placeholder="<strong>AI 一键生成 PPT</strong><br><br>输入你的主题内容",
-        height=800,
+        placeholder="<h1>AI 一键生成 PPT</h1><br> <h4>聊天界面输入你的主题内容 ，比如：'固态电池的发展与未来'。回车发送消息，如果需要配图，则点击一键配图，再点击一键生成PPT</h4><br> ",
+        height=600,
         type="messages",
     )
 
