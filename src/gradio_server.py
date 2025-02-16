@@ -100,7 +100,7 @@ with gr.Blocks(
 
     # 创建聊天机器人界面，提示用户输入
     contents_chatbot = gr.Chatbot(
-        placeholder="<h1>AI 一键生成 PPT</h1><br> <h4>聊天界面输入你的主题内容 ，比如：'固态电池的发展与未来'。回车发送消息，如果需要配图，则点击一键配图，再点击一键生成PPT</h4><br> ",
+        placeholder="<h1>AI 一键生成 PPT</h1><br> <h4>聊天界面输入你的主题内容 ，比如：'固态电池的发展与未来'。回车发送消息，如果需要配图，则点击一键配图，再点击一键生成PPT</h4><br> <h4><a href='https://www.bilibili.com/video/BV1mkA5eHECx/?vd_source=414407d7e1eb48d8bcc1bdf9c9fc1599'>视频演示地址</a>。</h4>",
         height=600,
         type="messages",
     )
