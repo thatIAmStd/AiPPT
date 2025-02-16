@@ -133,5 +133,6 @@ if __name__ == "__main__":
     demo.queue().launch(
         share=False,
         server_name="0.0.0.0",
+        server_port=80,
         # auth=("x", "x") # ⚠️注意：记住修改密码
     )
