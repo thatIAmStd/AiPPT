@@ -7,3 +7,4 @@ langchain_community==0.2.17
 langchain_openai==0.1.25
 python-docx==1.1.2
 jupyterlab==4.3.0
+pydantic==2.10.6

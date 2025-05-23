@@ -10,7 +10,6 @@ import requests
 from PIL import Image
 from bs4 import BeautifulSoup
 from langchain_community.chat_models import ChatOpenAI
-from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
 
 from logger import LOG
